@@ -1,0 +1,19 @@
+# Build-context ignore list used only by Dockerfile.preview (it replaces
+# .dockerignore for this build). Keeps Git data, local builds and anything
+# secret-looking out of the preview image.
+.git
+.github
+node_modules
+dist
+.astro
+public/pagefind
+.vscode
+.idea
+.DS_Store
+.env
+.env.*
+.npmrc
+**/*.pem
+**/*.key
+compose*.yaml
+Dockerfile*

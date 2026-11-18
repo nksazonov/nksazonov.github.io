@@ -1,0 +1,31 @@
+# Local preview only. Start:  docker compose -f compose.preview.yaml up --build
+# Open http://localhost:4321 in a browser window without wallet extensions
+# (e.g. a Chrome Guest window). Stop: Ctrl+C, then
+#   docker compose -f compose.preview.yaml down
+name: blog-preview
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.preview
+    image: blog-preview
+    ports:
+      # Mac side: localhost only, so other devices on the same network cannot connect.
+      - "127.0.0.1:4321:4321"
+    volumes:
+      # Posts, the About page and images: live from the Mac, read-only.
+      # Nothing else from the host is shared (no .git, no home folder, no secrets).
+      - type: bind
+        source: ./src/content
+        target: /app/src/content
+        read_only: true
+      - type: bind
+        source: ./public
+        target: /app/public
+        read_only: true
+    # Hardening: no extra Linux privileges for processes in the container.
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true

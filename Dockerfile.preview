@@ -1,0 +1,30 @@
+# Local preview only (not used for deployment).
+# Installs dependencies and runs the Astro dev server inside a container, so npm
+# packages and their install scripts never run on the host machine.
+# Run with: docker compose -f compose.preview.yaml up --build
+
+FROM node:24-alpine
+
+# pnpm version the theme was tested with (from its original compose.yaml).
+RUN npm install -g pnpm@11.3.0
+
+WORKDIR /app
+RUN chown node:node /app
+
+# Run as the image's unprivileged "node" user, not root.
+USER node
+
+# Dependencies first, so this layer is cached until the lockfile changes.
+COPY --chown=node:node package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+RUN pnpm install --frozen-lockfile
+
+# Theme code is baked in; rebuild the image to pick up changes outside
+# src/content/ and public/ (those two are mounted read-only at run time).
+COPY --chown=node:node . .
+
+EXPOSE 4321
+
+# --host 0.0.0.0: listen on the container's Docker-network address too, so the
+# published port can reach the server. Exposure to the Mac is limited by the
+# port mapping in compose.preview.yaml (127.0.0.1 only).
+CMD ["pnpm", "dev", "--host", "0.0.0.0"]

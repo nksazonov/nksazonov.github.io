@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1150 380" width="1150" height="380" font-family="Helvetica, Arial, sans-serif" font-size="17">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#4b5563"/>
+    </marker>
+    <marker id="arrow-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#b7791f"/>
+    </marker>
+  </defs>
+
+  <!-- background -->
+  <rect x="0" y="0" width="1150" height="380" rx="14" fill="#ffffff"/>
+
+  <!-- edges -->
+  <g fill="none" stroke="#4b5563" stroke-width="2">
+    <!-- Received -> Waiting -->
+    <path d="M190 100 H278" marker-end="url(#arrow)"/>
+    <!-- Waiting -> Processed -->
+    <path d="M490 100 H628" marker-end="url(#arrow)"/>
+    <!-- Waiting -> Cancelled -->
+    <path d="M440 140 V240 H628" marker-end="url(#arrow)"/>
+    <!-- Re-included -> Waiting -->
+    <path d="M250 320 H340 V142" marker-end="url(#arrow)"/>
+  </g>
+  <!-- Processed -> Deep reorg (dotted, amber) -->
+  <path d="M800 100 H938" fill="none" stroke="#b7791f" stroke-width="2" stroke-dasharray="3 5" marker-end="url(#arrow-amber)"/>
+
+  <!-- edge labels -->
+  <g fill="#374151" font-size="15" text-anchor="middle">
+    <text x="559" y="88">timer ends</text>
+    <text x="534" y="228">removed notice</text>
+    <text x="328" y="226" text-anchor="end">starts a</text><text x="328" y="245" text-anchor="end">fresh window</text>
+    <text x="869" y="72" fill="#7a4f00">removed notice</text>
+    <text x="869" y="90" fill="#7a4f00">after processing</text>
+  </g>
+
+  <!-- nodes -->
+  <g text-anchor="middle">
+    <!-- Received -->
+    <rect x="40" y="70" width="150" height="60" rx="8" fill="#f3f4f6" stroke="#6b7280" stroke-width="1.5"/>
+    <text x="115" y="106" fill="#111827">Received</text>
+
+    <!-- Waiting -->
+    <rect x="280" y="60" width="210" height="80" rx="8" fill="#f3f4f6" stroke="#6b7280" stroke-width="1.5"/>
+    <text x="385" y="95" fill="#111827">Waiting</text>
+    <text x="385" y="118" fill="#4b5563" font-size="15">(window timer)</text>
+
+    <!-- Processed -->
+    <rect x="630" y="65" width="170" height="70" rx="8" fill="#e7f5e9" stroke="#2e7d32" stroke-width="2"/>
+    <text x="715" y="96" fill="#1b5e20">Processed</text>
+    <text x="715" y="118" fill="#1b5e20" font-size="15">(credited)</text>
+
+    <!-- Deep reorg -->
+    <rect x="940" y="60" width="180" height="80" rx="8" fill="#fff4d6" stroke="#b7791f" stroke-width="2" stroke-dasharray="7 5"/>
+    <text x="1030" y="95" fill="#5c3d00">Deep reorg:</text>
+    <text x="1030" y="118" fill="#5c3d00" font-size="15">loud warning / halt</text>
+
+    <!-- Cancelled -->
+    <rect x="630" y="210" width="170" height="60" rx="8" fill="#fde8e8" stroke="#c62828" stroke-width="2"/>
+    <text x="715" y="246" fill="#8e1b1b">Cancelled</text>
+
+    <!-- Re-included copy -->
+    <rect x="30" y="285" width="220" height="70" rx="8" fill="#f3f4f6" stroke="#6b7280" stroke-width="1.5"/>
+    <text x="140" y="316" fill="#111827">Re-included copy</text>
+    <text x="140" y="338" fill="#4b5563" font-size="15">(new block, new key)</text>
+  </g>
+</svg>
